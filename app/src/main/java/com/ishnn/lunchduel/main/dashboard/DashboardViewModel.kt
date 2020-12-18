@@ -1,4 +1,4 @@
-package com.ishnn.lunchduel.ui.dashboard
+package com.ishnn.lunchduel.main.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

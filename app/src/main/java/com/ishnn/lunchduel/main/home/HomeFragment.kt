@@ -1,21 +1,16 @@
-package com.ishnn.lunchduel.ui.home
+package com.ishnn.lunchduel.main.home
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.ishnn.lunchduel.NotificationActivity
 import com.ishnn.lunchduel.R
 import com.ishnn.lunchduel.item.view.LunchView
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.net.URL
 
 class HomeFragment : Fragment(), LunchView.OnKakaoLoginInterface {
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.ishnn.lunchduel.ui.notifications
+package com.ishnn.lunchduel.main.notifications
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,4 +1,4 @@
-package com.ishnn.lunchduel.ui.notifications
+package com.ishnn.lunchduel.main.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater

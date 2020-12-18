@@ -1,34 +1,53 @@
 package com.ishnn.lunchduel.item.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieDrawable
 import com.ishnn.lunchduel.R
+import kotlinx.android.synthetic.main.item_lunch.view.*
 import kotlinx.coroutines.*
 import java.io.IOException
-import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 
-class LunchView : View {
+
+class LunchView : ConstraintLayout {
     private var imageURL: String? = null
-    private var lunchName: String? = null
+    private var lunchName: TextView? = null
     private var lunchNameColor = 0
     private var lunchVote = 0
 
-    constructor(context: Context?) : super(context) {}
+    interface OnKakaoLoginInterface {
+        fun onLogin(bitmap: Bitmap)
+    }
+
+    constructor(context: Context) : super(context)
+
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         val array = context.theme.obtainStyledAttributes(attrs, R.styleable.LunchView, 0, 0)
         try {
-            //this.imageURL = array.getString(R.styleable.LunchView_imageURL);
-            imageURL =
-                "https://firebasestorage.googleapis.com/v0/b/lunchduel.appspot.com/o/menu_image%2Fchicken.jpg?alt=media&token=952282bf-0f04-4f40-87a7-81f78ecb10c1"
-            lunchName = array.getString(R.styleable.LunchView_lunchName)
+            imageURL = array.getString(R.styleable.LunchView_imageURL);
+            val lunchNameText = array.getString(R.styleable.LunchView_lunchName)
+
             lunchNameColor = array.getColor(0, Color.WHITE)
             lunchVote = array.getInteger(R.styleable.LunchView_lunchVote, 0)
+
+            val service = Context.LAYOUT_INFLATER_SERVICE
+            val li = getContext().getSystemService(service) as LayoutInflater
+
+            val layout = li.inflate(R.layout.item_lunch, this, true) as ConstraintLayout
+            lunchName = layout.findViewById(R.id.item_lunch_name) as TextView
+            lunchName!!.text = lunchNameText
+            lunchName!!.visibility = View.GONE
+            array.recycle()
         } finally {
         }
     }
@@ -37,62 +56,23 @@ class LunchView : View {
         return imageURL
     }
 
-    fun setImageURL(imageURL: String?) {
+    fun setImageURL(imageURL: String?, callbacks: OnKakaoLoginInterface){
         this.imageURL = imageURL
-        invalidate()
-        requestLayout()
-    }
-
-    fun getLunchName(): String? {
-        return lunchName
-    }
-
-    fun setLunchName(lunchName: String?) {
-        this.lunchName = lunchName
-        invalidate()
-        requestLayout()
-    }
-
-    fun getLunchNameColor(): Int? {
-        return lunchNameColor
-    }
-
-    fun setLunchNameColor(lunchNameColor: Int) {
-        this.lunchNameColor = lunchNameColor
-        invalidate()
-        requestLayout()
-    }
-
-    fun getLunchVote(): Int {
-        return lunchVote
-    }
-
-    fun setLunchVote(lunchVote: Int) {
-        this.lunchVote = lunchVote
-        invalidate()
-        requestLayout()
-    }
-
-    @SuppressLint("DrawAllocation")
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        val width = this.measuredWidth
-        val height = this.measuredHeight
         GlobalScope.launch {
             try {
-                val bitmap = cropBitmap(getBitmapFromURL(imageURL)!!)
-                val centreX = (width - bitmap.width) / 2.toFloat()
-                val centreY = (height - bitmap.height) / 2.toFloat()
-                canvas.drawBitmap(bitmap, centreX, centreY, null)
-                val textp = Paint()
-                textp.color = Color.WHITE
-                textp.textSize = 100f
-                textp.textAlign = Paint.Align.CENTER
-                canvas.drawText(lunchName!!, width / 2.toFloat(), height / 2.toFloat(), textp)
+                delay(1000)
+                val bitmap = getBitmapFromURL(imageURL)!!
+                callbacks.onLogin(bitmap)
             } catch (e: Exception) {
-                Log.e("e", e.toString())
+                Log.e("setImageURL", "message : $e")
             }
         }
+    }
+
+    fun setImageBitmap(bitmap: Bitmap){
+        item_lunch_loading.visibility = View.GONE
+        item_lunch_image.setImageBitmap(bitmap)
+        item_lunch_name.visibility = View.VISIBLE
     }
 
     companion object {
@@ -105,26 +85,9 @@ class LunchView : View {
                 val input = connection.inputStream
                 BitmapFactory.decodeStream(input)
             } catch (e: IOException) {
-                // Log exception
+                Log.e("getBitmapFromURL", "message : $e")
                 null
             }
-        }
-
-        fun cropBitmap(bitmap: Bitmap): Bitmap {
-            val width = bitmap.width;
-            val height = bitmap.height;
-
-            // 이미지를 crop 할 좌상단 좌표
-            var x = 0
-            var y = 0
-            if (width > height) { // 이미지의 가로가 view 의 가로보다 크면..
-                x = (width - height) / 2
-            } else if (height > width) { // 이미지의 세로가 view 의 세로보다 크면..
-                y = (height - width) / 2;
-            }
-
-            val croppedBitmap = Bitmap.createBitmap(bitmap, x, y, 100, 100);
-            return croppedBitmap;
         }
     }
 }

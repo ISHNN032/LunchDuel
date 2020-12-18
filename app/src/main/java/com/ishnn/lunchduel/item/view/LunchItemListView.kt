@@ -19,7 +19,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class LunchView : ConstraintLayout {
+class LunchItemListView : ConstraintLayout {
     private var imageURL: String? = null
     private var lunchName: TextView? = null
     private var lunchNameColor = 0
