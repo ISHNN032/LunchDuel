@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="desc_image_mainmenu">Image_MainMenu</string>
+    <string name="desc_item_lunch_image">Item_Lunch_Image</string>
+    <string name="percentage">확률</string>
+    <string name="history">이력</string>
 </resources>

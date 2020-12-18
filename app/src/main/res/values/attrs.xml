@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LunchView">
+        <attr name="imageURL" format="string"/>
+        <attr name="lunchName" format="string" />
+        <attr name="lunchNameColor" format="color" />
+        <attr name="lunchVote" format="integer" />
+    </declare-styleable>
+
+</resources>
